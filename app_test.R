@@ -421,7 +421,7 @@ server <- function(input, output, session) {
             det_config = det_config,
             cam_config = NULL,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, scrollY = 600, pageLength = 500,
+                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = TRUE,
                 initComplete = JS(
                     "function(settings, json) {",
@@ -531,7 +531,7 @@ server <- function(input, output, session) {
             det_config = NULL,
             cam_config = cam_config,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, scrollY = 600, pageLength = 500,
+                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = FALSE,
                 initComplete = JS(
                     "function(settings, json) {",

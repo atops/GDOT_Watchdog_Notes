@@ -177,7 +177,7 @@ dtedit <- function(session,
     
     output[[DataTableName]] <- DT::renderDataTable({
         thedata[,view.cols]
-    }, options = datatable.options, server=TRUE, selection='single', rownames=FALSE, ...)
+    }, options = datatable.options, server=TRUE, selection='multiple', rownames=FALSE, ...)
     
     getFields <- function(typeName, values) {
         fields <- list()
@@ -250,7 +250,8 @@ dtedit <- function(session,
                 fields[[i]] <- shiny::checkboxInput(paste0(name, typeName, edit.cols[i]),
                                                     label=edit.label.cols[i],
                                                     value=value,
-                                                    width=text.width)} else {
+                                                    width=text.width)
+            } else {
                 stop('Invalid input type!')
             }
         }
@@ -338,7 +339,7 @@ dtedit <- function(session,
             }
             updateData(dt.proxy,
                        result$thedata[,view.cols],
-                       rownames = FALSE, resetPaging = FALSE, clearSelection = "none")
+                       rownames = FALSE, resetPaging = FALSE)
             shiny::removeModal()
             return(TRUE)
         }, error = function(e) {
@@ -460,7 +461,7 @@ dtedit <- function(session,
                     }
                     updateData(dt.proxy,
                                result$thedata[,view.cols],
-                               rownames = FALSE, resetPaging = FALSE, clearSelection = "none")
+                               rownames = FALSE, resetPaging = FALSE)
                     shiny::removeModal()
                     return(TRUE)
                 }, error = function(e) {
@@ -473,10 +474,16 @@ dtedit <- function(session,
     })
     
     editModal <- function(row) {
-        output[[paste0(name, '_message')]] <- renderText('')
+        message_text <- ifelse(
+            length(row) == 1, 
+            '', 
+            glue("Editing {length(row)} entries. They will all have the same values."))
+        
+        output[[paste0(name, '_message')]] <- renderText(message_text)
         fields <- getFields('_edit_', values=result$thedata[row,])
         shiny::modalDialog(title = title.edit,
-                           shiny::div(shiny::textOutput(paste0(name, '_message')), style='color:red'),
+                           shiny::div(shiny::textOutput(paste0(name, '_message')), 
+                                      style='color:red; font-weight:bold'),
                            fields,
                            footer = column(shiny::modalButton('Cancel'),
                                            shiny::actionButton(paste0(name, '_update'), 'Save'),
@@ -508,7 +515,7 @@ dtedit <- function(session,
                 }
                 updateData(dt.proxy,
                            result$thedata[,view.cols],
-                           rownames = FALSE, resetPaging = FALSE, clearSelection = "none")
+                           rownames = FALSE, resetPaging = FALSE)
                 shiny::removeModal()
                 return(TRUE)
             }
