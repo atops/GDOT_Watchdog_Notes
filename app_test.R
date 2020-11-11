@@ -439,7 +439,7 @@ server <- function(input, output, session) {
                     sprintf("function icon(x) { let result; if (x==true) {result = '%s';} else {result = '%s'} return result }", yes_icon, no_icon),
                     paste(glue("$(this.api().cell(index, {boolean_cols}).node()).html( icon(data[index,{boolean_cols}]) );"), collapse = " "),
                     paste(glue("$(this.api().cell(index, {watchdog_cols}).node()).css('background-color', '{VERY_LIGHT_BLUE}');"), collapse = " "),
-                    "}"),
+                    "}")
                 
                 # preDrawCallback = JS(
                 #     "function (settings) {",
