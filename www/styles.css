@@ -1,0 +1,26 @@
+
+@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro);
+
+#camera_alerts_dt_edit {
+    font-family: 'Source Sans Pro';
+    font-size: 14px;
+}
+
+.has-feedback .form-control {
+    padding-right: 10px;
+}
+
+a {
+    font-family: 'Source Sans Pro';
+    /*color: blue;*/
+}
+
+button {
+    font-family: 'Source Sans Pro';
+    /*color: blue;*/
+}
+
+#exportData {
+    font-family: 'Source Sans Pro';
+    /*color: red;*/
+}
