@@ -24,3 +24,10 @@ button {
     font-family: 'Source Sans Pro';
     /*color: red;*/
 }
+
+
+/* Dummy SelectInput required for DTedit to work. Workaround. */
+body > div.container-fluid > div.form-group.shiny-input-container {
+    visibility: hidden;
+    height: 1px;
+}

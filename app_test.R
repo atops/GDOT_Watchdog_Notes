@@ -588,6 +588,8 @@ ui <- fluidPage(
     includeCSS("www/styles.css"),
     titlePanel(title = "", windowTitle = "Mark1 Watchdog Alerts"),
     
+    selectInput("dummy_selectinput", "", NULL),
+    
     h3('Watchdog Alerts and Notes', style = "font-family: Source Sans Pro"),
     tabsetPanel(
         type = "tabs",
