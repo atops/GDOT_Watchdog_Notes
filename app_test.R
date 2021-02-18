@@ -440,21 +440,7 @@ server <- function(input, output, session) {
                     paste(glue("$(this.api().cell(index, {boolean_cols}).node()).html( icon(data[index,{boolean_cols}]) );"), collapse = " "),
                     paste(glue("$(this.api().cell(index, {watchdog_cols}).node()).css('background-color', '{VERY_LIGHT_BLUE}');"), collapse = " "),
                     "}")
-                
-                # preDrawCallback = JS(
-                #     "function (settings) {",
-                #     "pageScrollPos = $('div.dataTables_scrollBody').scrollTop();",
-                #     "alert(pageScrollPos)",
-                #     "},")
-                
-                #drawCallback = JS(
-                #    "function (settings) {",
-                #    "$('div.dataTables_scrollBody').scrollTop(pageScrollPos);",
-                #    "}")
-                
-                #drawCallback = JS("function(settings) { $(this.api().row(50).node()).scrollIntoView() }")
                 ),
-            
             colnames = c(
                 "Zone", "Corridor", "SignalID", "Phase", "Detector", "Name", "Approach",
                 "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
@@ -596,11 +582,11 @@ ui <- fluidPage(
         tabPanel(
             "Detectors",
             uiOutput("detector_alerts_dt"),
-            div("Some detector explanatory text here", style = styl)),
+            div("Select any row and click the Edit button to edit.", style = styl)),
         tabPanel(
             "Cameras", 
             uiOutput("camera_alerts_dt"),
-            div("Some camera explanatory text here.", style = styl))
+            div("Select any row and click the Edit button to edit.", style = styl))
     )
     
     #div("------------------------------------------"),
