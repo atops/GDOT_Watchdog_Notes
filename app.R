@@ -194,7 +194,7 @@ get_alerts_ben <- function() {
         group_by(Zone, Corridor, SignalID, CallPhase, Detector, Name, ApproachDesc) %>%
         summarize(alerts = paste0(Alert_Stk, collapse = "|"), .groups = "keep") %>%
         mutate(
-            SignalID = as.integer(as.character(SignalID)),
+            SignalID = SignalID,
             CallPhase = as.character(CallPhase),
             Detector = as.character(Detector),
             Captured.in.Mark1 = TRUE) %>%
@@ -256,7 +256,7 @@ server <- function(input, output, session) {
         filter(LastModified == max(LastModified, na.rm = TRUE)) %>%
         ungroup() %>%
         mutate(
-            SignalID = as.integer(SignalID),
+            SignalID = factor(SignalID),
             Detector = as.character(Detector),
             Cause.of.Malfunction = factor(
                 Cause.of.Malfunction,
@@ -421,7 +421,7 @@ server <- function(input, output, session) {
             det_config = det_config,
             cam_config = NULL,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
+                dom = 'lpt', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = TRUE,
                 initComplete = JS(
                     "function(settings, json) {",
@@ -444,7 +444,7 @@ server <- function(input, output, session) {
             colnames = c(
                 "Zone", "Corridor", "SignalID", "Phase", "Detector", "Name", "Approach",
                 "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-                "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
+                "TEAMS Task Created", "Captured in SigOps", "ATSPM Config Correct",
                 "Priority", "Comments", "LastModified"),
             filter = "top",
             class = 'cell-border stripe compact',
@@ -517,7 +517,7 @@ server <- function(input, output, session) {
             det_config = NULL,
             cam_config = cam_config,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
+                dom = 'lpt', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = FALSE,
                 initComplete = JS(
                     "function(settings, json) {",
@@ -539,7 +539,7 @@ server <- function(input, output, session) {
             colnames = c(
                 "Zone", "Corridor", "CameraID", "Name",
                 "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-                "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
+                "TEAMS Task Created", "Captured in SigOps", "ATSPM Config Correct",
                 "Priority", "Comments", "LastModified"),
             filter = "top",
             class = 'cell-border stripe compact',
@@ -572,11 +572,11 @@ server <- function(input, output, session) {
 ui <- fluidPage(
     
     includeCSS("www/styles.css"),
-    titlePanel(title = "", windowTitle = "Mark1 Watchdog Alerts"),
+    titlePanel(title = "", windowTitle = "SigOps Watchdog Alerts"),
     
     selectInput("dummy_selectinput", "", NULL),
     
-    h3('Watchdog Alerts and Notes', style = "font-family: Source Sans Pro"),
+    h3(div(img(src='GDOTLogo.svg'), 'SigOps Metrics - Watchdog Alerts and Notes')),
     tabsetPanel(
         type = "tabs",
         tabPanel(
