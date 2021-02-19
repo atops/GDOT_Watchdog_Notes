@@ -421,7 +421,7 @@ server <- function(input, output, session) {
             det_config = det_config,
             cam_config = NULL,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, scrollY = 600, pageLength = 500,
+                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = TRUE,
                 initComplete = JS(
                     "function(settings, json) {",
@@ -517,7 +517,7 @@ server <- function(input, output, session) {
             det_config = NULL,
             cam_config = cam_config,
             datatable.options = list(
-                dom = 'tp', scrollX = TRUE, scrollY = 600, pageLength = 500,
+                dom = 'tp', scrollX = TRUE, pageLength = 8,  # scrollY = 600, 
                 autoWidth = FALSE,
                 initComplete = JS(
                     "function(settings, json) {",
@@ -574,17 +574,19 @@ ui <- fluidPage(
     includeCSS("www/styles.css"),
     titlePanel(title = "", windowTitle = "Mark1 Watchdog Alerts"),
     
+    selectInput("dummy_selectinput", "", NULL),
+    
     h3('Watchdog Alerts and Notes', style = "font-family: Source Sans Pro"),
     tabsetPanel(
         type = "tabs",
         tabPanel(
             "Detectors",
             uiOutput("detector_alerts_dt"),
-            div("Some detector explanatory text here", style = styl)),
+            div("Select any row and click the Edit button to edit.", style = styl)),
         tabPanel(
             "Cameras", 
             uiOutput("camera_alerts_dt"),
-            div("Some camera explanatory text here.", style = styl))
+            div("Select any row and click the Edit button to edit.", style = styl))
     )
     
     #div("------------------------------------------"),
