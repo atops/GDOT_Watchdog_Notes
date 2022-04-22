@@ -185,18 +185,19 @@ get_all_corridors_ben <- function() {
 
 
 
-get_alerts_ben <- function() {
+get_alerts_ben <- function(conn) {
 
     # Read Alerts from S3
-    alerts <- s3read_using(
-        qread,
-        bucket = conf$bucket, object = "mark/watchdog/alerts.qs",
-        opts = list(
-            key = cred$AWS_ACCESS_KEY_ID,
-            secret = cred$AWS_SECRET_ACCESS_KEY,
-            region = cred$AWS_DEFAULT_REGION
-        )
-    )
+    # alerts <- s3read_using(
+    #     qread,
+    #     bucket = conf$bucket, object = "mark/interim/watchdog/alerts.qs",
+    #     opts = list(
+    #         key = cred$AWS_ACCESS_KEY_ID,
+    #         secret = cred$AWS_SECRET_ACCESS_KEY,
+    #         region = cred$AWS_DEFAULT_REGION
+    #     )
+    # )
+    alerts <- dbReadQuery(conn, "WatchdogAlerts")
 
     most_recent_date <- alerts %>%
         group_by(Alert) %>%
@@ -336,7 +337,7 @@ server <- function(input, output, session) {
         )
 
 
-    alerts <- get_alerts_ben()
+    alerts <- get_alerts_ben(conn)
     det_config <- get_det_config_ben()
     all_corridors <- get_all_corridors_ben()
     corridors <- all_corridors %>%
@@ -423,11 +424,6 @@ server <- function(input, output, session) {
             "TEAMS.Task.Created", "Captured.in.Mark1", "ATSPM.Config.Correct",
             "Priority", "Comments", "LastModified"
         )
-        # view_col_names <- c(
-        #     "Zone", "Corridor", "SignalID", "Phase", "Detector", "Name", "Approach",
-        #     "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-        #     "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
-        #     "Priority", "Comments", "LastModified")
         edit_cols <- c(
             "Cause.of.Malfunction", "Repair.Status",
             "Under.Construction", "TEAMS.Task.Created", "ATSPM.Config.Correct",
@@ -526,11 +522,6 @@ server <- function(input, output, session) {
             "TEAMS.Task.Created", "Captured.in.Mark1", "ATSPM.Config.Correct",
             "Priority", "Comments", "LastModified"
         )
-        # view_col_names <- c(
-        #     "Zone", "Corridor", "CameraID", "Name",
-        #     "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-        #     "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
-        #     "Priority", "Comments", "LastModified")
         edit_cols <- c(
             "Cause.of.Malfunction", "Repair.Status",
             "Under.Construction", "TEAMS.Task.Created", "ATSPM.Config.Correct",
@@ -635,12 +626,12 @@ ui <- fluidPage(
         tabPanel(
             "Detectors",
             uiOutput("detector_alerts_dt"),
-            div("Select any row and click the Edit button to edit.", style = styl)
+            div("Select any row (or rows) and click the Edit button to edit.", style = styl)
         ),
         tabPanel(
             "Cameras",
             uiOutput("camera_alerts_dt"),
-            div("Select any row and click the Edit button to edit.", style = styl)
+            div("Select any row (or rows) and click the Edit button to edit.", style = styl)
         )
     )
 
