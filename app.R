@@ -197,7 +197,7 @@ get_alerts_ben <- function(conn) {
     #         region = cred$AWS_DEFAULT_REGION
     #     )
     # )
-    alerts <- dbReadQuery(conn, "WatchdogAlerts")
+    alerts <- dbReadTable(conn, "WatchdogAlerts")
 
     most_recent_date <- alerts %>%
         group_by(Alert) %>%
