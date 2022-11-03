@@ -39,9 +39,9 @@ BLACK <- "#000000"
 DARK_GRAY_BAR <- "#252525"
 LIGHT_GRAY_BAR <- "#bdbdbd"
 
-RED2 <- "#e41a1c"
+RED2 <- "#E41A1C"
 GDOT_BLUE <- "#045594"
-GDOT_BLUE_RGB <- "#2d6797"
+GDOT_BLUE_RGB <- "#2D6797"
 GDOT_YELLOW <- "#EEB211"
 GDOT_YELLOW_RGB <- "rgba(238, 178, 17, 0.80)"
 
@@ -171,7 +171,7 @@ get_cam_config <- function(object, bucket, corridors) {
 get_all_corridors_ben <- function() {
     s3read_using(
         qs::qread,
-        bucket = conf$bucket, object = "all_Corridors_Latest.qs",
+        bucket = conf$bucket, object = sub("\\..*", ".qs", paste0("all_", conf$corridors_filename_s3)),
         opts = list(
             key = cred$AWS_ACCESS_KEY_ID,
             secret = cred$AWS_SECRET_ACCESS_KEY,
@@ -190,7 +190,7 @@ get_alerts_ben <- function() {
     # Read Alerts from S3
     alerts <- s3read_using(
         qread,
-        bucket = conf$bucket, object = "mark/watchdog/alerts.qs",
+        bucket = conf$bucket, object = "mark/interim/watchdog/alerts.qs",
         opts = list(
             key = cred$AWS_ACCESS_KEY_ID,
             secret = cred$AWS_SECRET_ACCESS_KEY,
@@ -489,7 +489,7 @@ server <- function(input, output, session) {
             colnames = c(
                 "Zone", "Corridor", "SignalID", "Phase", "Detector", "Name", "Approach",
                 "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-                "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
+                "TEAMS Task Created", "Captured in SigOps", "ATSPM Config Correct",
                 "Priority", "Comments", "LastModified"
             ),
             filter = "top",
@@ -592,7 +592,7 @@ server <- function(input, output, session) {
             colnames = c(
                 "Zone", "Corridor", "CameraID", "Name",
                 "Alert (Streak)", "Cause of Malfunction", "Repair Status", "Under Construction",
-                "TEAMS Task Created", "Captured in Mark1", "ATSPM Config Correct",
+                "TEAMS Task Created", "Captured in SigOps", "ATSPM Config Correct",
                 "Priority", "Comments", "LastModified"
             ),
             filter = "top",
@@ -627,7 +627,7 @@ server <- function(input, output, session) {
 ##### Create the shiny UI
 ui <- fluidPage(
     includeCSS("www/styles.css"),
-    titlePanel(title = "", windowTitle = "Mark1 Watchdog Alerts"),
+    titlePanel(title = "", windowTitle = "SigOps Watchdog Alerts"),
 
     selectInput("dummy_selectinput", "", NULL),
 
