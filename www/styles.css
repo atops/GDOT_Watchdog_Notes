@@ -1,5 +1,20 @@
 
-@import url(//fonts.googleapis.com/css?family=Source+Sans+Pro);
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Condensed');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
+h3 {
+    font-family: 'Ubuntu Condensed', sans-serif;
+    color: white;
+    background-color: #045594;
+    font-size: 24px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+}
+
+img {
+    height: 43px;
+}
 
 #camera_alerts_dt_edit {
     font-family: 'Source Sans Pro';
@@ -30,4 +45,8 @@ button {
 body > div.container-fluid > div.form-group.shiny-input-container {
     visibility: hidden;
     height: 1px;
+}
+h2 {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
