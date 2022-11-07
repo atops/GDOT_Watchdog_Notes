@@ -116,7 +116,9 @@ get_cam_config <- function(object, bucket, corridors) {
             region = cred$AWS_DEFAULT_REGION
         )
     ) %>%
-        filter(Include == TRUE) %>%
+        filter(
+            Include == TRUE,
+            !is.na(`MaxView ID`)) %>%
         transmute(
             CameraID = factor(CameraID),
             Location,
@@ -627,11 +629,12 @@ server <- function(input, output, session) {
 ##### Create the shiny UI
 ui <- fluidPage(
     includeCSS("www/styles.css"),
-    titlePanel(title = "", windowTitle = "SigOps Watchdog Alerts"),
-
+    titlePanel(
+        title = div(tags$img(src="GDOTLogo.svg"), "SigOps Metrics | Watchdog Alerts and Notes"), 
+        windowTitle = "SigOps Watchdog Alerts"),
+    
     selectInput("dummy_selectinput", "", NULL),
 
-    h3("Watchdog Alerts and Notes", style = "font-family: Source Sans Pro"),
     tabsetPanel(
         type = "tabs",
         tabPanel(
